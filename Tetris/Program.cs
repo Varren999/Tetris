@@ -8,67 +8,71 @@ namespace Tetris
 {
     internal class Program
     {
-        static void Main()
+        static void Screen(string[] text)
         {
-            bool[,] bools = new bool[15, 10];
-
-            string[,] pole = {{"#                    ##########" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    ##########" },
-                              {"#                    # Score: #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"#                    #        #" },
-                              {"###############################" } };
-
-            string[,] figureA = { { "[][]" },
-                                  { "[][]" }};
-
-            string[] figureB = { "[][][][]" };
-
-            string[,] figureC = { { "[][]  " },
-                                  { "  [][]" } };
-
-            string[,] figureD = { {"[][][]"},
-                                  {"[]    "} };
-
-            string[,] figureE = { {"[]"},
-                                  {"[]"},
-                                  {"[]"},
-                                  {"[]"}};
-
-            string[,] figureF = { { "  []"},
-                                  { "[][]"},
-                                  { "[]  "} };
-
-            string[,] figureG = { { "[][]"},
-                                  { "  []"},
-                                  { "  []"} };
-
-            string[,] figureH = { { "  []  "},
-                                  { "[][][]"} };
             try
             {
-                for (int c = 0; c < pole.Rank; c++)
+                for (int c = 0; c < text.Length; c++)
                 {
-                    for (int i = 0; i < pole.Length; i++)
-                    {
-                        Console.WriteLine(pole[i, c]);
-                    }
+                    Console.WriteLine(text[c]);
                 }
-            }
-            catch(Exception ex)
+}
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        static void Main()
+        {
+            
+            bool[,] bools = new bool[15, 10];
+
+            string[] pole = {"#                    ##########",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    ##########",
+                             "#                    # Score: #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "#                    #        #",
+                             "###############################"};
+
+            string[] figureA = { "[][]",
+                                 "[][]"};
+
+            string[] figureB = { "[][][][]" };
+
+            string[] figureC = { "[][]  ",
+                                 "  [][]" };
+
+            string[] figureD = { "[][][]",
+                                 "[]    "};
+
+            string[] figureE = { "[]",
+                                 "[]",
+                                 "[]",
+                                 "[]"};
+
+            string[] figureF = { "  []",
+                                 "[][]",
+                                 "[]  "};
+
+            string[] figureG = { "[][]",
+                                 "  []",
+                                 "  []"};
+
+            string[] figureH = { "  []  ",
+                                 "[][][]"};
+
+            Screen(pole);
         }
     }
 }
