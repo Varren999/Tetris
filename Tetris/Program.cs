@@ -4,46 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tetris
+namespace ConsoleApp
 {
     internal class Program
     {
-        static void Screen(string[] text)
-        {
-            try
-            {
-                for (int c = 0; c < text.Length; c++)
-                {
-                    Console.WriteLine(text[c]);
-                }
-}
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
         static void Main()
         {
             
             bool[,] bools = new bool[15, 10];
 
-            string[] pole = {"#                    ##########",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    ##########",
-                             "#                    # Score: #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "#                    #        #",
-                             "###############################"};
 
             string[] figureA = { "[][]",
                                  "[][]"};
@@ -72,7 +41,9 @@ namespace Tetris
             string[] figureH = { "  []  ",
                                  "[][][]"};
 
-            Screen(pole);
+            //Screen(map);
+            Tetris tr = new Tetris();
+            tr.Play();
         }
     }
 }
