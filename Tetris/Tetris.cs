@@ -15,7 +15,7 @@ namespace ConsoleApp
         Stopwatch timer = new Stopwatch();
         StringBuilder sb = new StringBuilder();
 
-        const int WIDTH = 32, HEIGHT = 16;
+        const int WIDTH = 32, HEIGHT = 15;
         
         float speed = 0;
 
@@ -35,57 +35,55 @@ namespace ConsoleApp
         // Обработка нажатий.
         void KeyDown()
         {
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.LeftArrow:
-                    {
-                        
-                    }
-                    break;
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        {
 
-                case ConsoleKey.RightArrow:
-                    {
+                        }
+                        break;
 
-                    }
-                    break;
+                    case ConsoleKey.RightArrow:
+                        {
 
-                case ConsoleKey.DownArrow:
-                    {
-                        
-                    }
-                    break;
+                        }
+                        break;
 
-                case ConsoleKey.Escape:
-                    {
-                        isExit = true;
-                    }
-                    break;
+                    case ConsoleKey.DownArrow:
+                        {
 
-                case ConsoleKey.Spacebar:
-                    {
-                        
-                    }
-                    break;
-            }
+                        }
+                        break;
+
+                    case ConsoleKey.Escape:
+                        {
+                            isExit = true;
+                        }
+                        break;
+
+                    case ConsoleKey.Spacebar:
+                        {
+
+                        }
+                        break;
+                }
         }
 
         // Стартовые данные.
         void StartSettings()
         {
-            //snake_dir = UP;
-            //speed = 1;
-            //pSnake[0] = { (short)WIDTH / 2, (short)HEIGHT / 2 };
-            //pFood = { (short)(1 + rand() % (WIDTH - 3)), (short)(1 + rand() % (HEIGHT - 2)) };
+            
         }
 
-        // Проверка съела ли змейка еду.
-        void IsEatFood()
+        //
+        bool IsFigureLive()
         {
-            //if (pSnake[0].X == pFood.X && pSnake[0].Y == pFood.Y)
-            //{
-            //    len++;
-            //    pFood = { (short)(1 + rand() % (WIDTH - 3)), (short)(1 + rand() % (HEIGHT - 2)) };
-            //}
+            return false;
+        }
+
+        void FigureBorn()
+        {
+
         }
 
         // Проверка на проигрыш.
@@ -106,10 +104,10 @@ namespace ConsoleApp
             return false;
         }
 
-        // Движение змейки.
+        // Движение.
         void MoveFigure()
         {
-            if (pFigure.Y > HEIGHT - 1)
+            if (pFigure.Y == HEIGHT - 1)
             {
                 deep = true;
                 pFigure.Y = 0;
@@ -122,7 +120,7 @@ namespace ConsoleApp
         // Метод очищает игровое поле.
         void Clear()
         {
-            string empty = "                                        ";
+            string empty = "                                                                    ";
             Console.SetCursorPosition(0, 0);
             try
             {
@@ -167,18 +165,18 @@ namespace ConsoleApp
         //
         void Final()
         {
-            //if (is_run)
-            //{
-            //    gotoxy(13, HEIGHT / 2);
-            //    std::cout << "\x1b[31mТы проиграл!\x1b[0m";
-            //    gotoxy(WIDTH, HEIGHT);
-            //}
-            //else
-            //{
-            //    gotoxy(13, HEIGHT / 2);
-            //    std::cout << "\x1b[31mИгра завершена!\x1b[0m";
-            //    gotoxy(WIDTH, HEIGHT);
-            //}
+            if (isExit)
+            {
+                Console.SetCursorPosition(13, HEIGHT / 2);
+                Console.Write("Ты проиграл!");
+                Console.SetCursorPosition(WIDTH, HEIGHT);
+            }
+            else
+            {
+                Console.SetCursorPosition(13, HEIGHT / 2);
+                Console.Write("Игра завершена!");
+                Console.SetCursorPosition(WIDTH, HEIGHT);
+            }
         }
 
         //
@@ -193,17 +191,21 @@ namespace ConsoleApp
                 pFigure.Y = 0;
                 do
                 {
+                    if(!IsFigureLive())
+                    {
+                        FigureBorn();
+                    }
+
                     if (timer.ElapsedMilliseconds - lastTimer >= 1000)
                     {
                         lastTimer = timer.ElapsedMilliseconds;
 
-                        //KeyDown();
+                        KeyDown();
 
-                        //IsEatFood();
+                        Screen();
 
                         MoveFigure();
 
-                        Screen();
                     }
                 } while (!IsLoss() && !isExit);
 
