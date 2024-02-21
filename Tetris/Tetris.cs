@@ -19,14 +19,9 @@ namespace ConsoleApp
         
         float speed = 0;
 
-        enum MOVE { DOWN, LEFT, RIGTH };
-
-
-        string figure = "[]";
+        string figure = "[][][][]";
         Point pFigure = new Point();
         bool deep = false;
-
-        int snake_dir;
 
         bool isExit = false;
 
@@ -35,23 +30,37 @@ namespace ConsoleApp
         // Обработка нажатий.
         void KeyDown()
         {
+            if (Console.KeyAvailable)
+            {
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.LeftArrow:
                         {
-
+                            --pFigure.X;
+                            if (pFigure.X < 1)
+                            {
+                                pFigure.X = 1;
+                            }
                         }
                         break;
 
                     case ConsoleKey.RightArrow:
                         {
-
+                            ++pFigure.X;
+                            if (pFigure.X + figure.Length > 21)
+                            {
+                                pFigure.X = 21 - figure.Length;
+                            }
                         }
                         break;
 
                     case ConsoleKey.DownArrow:
                         {
-
+                            ++pFigure.Y;
+                            if (pFigure.Y > HEIGHT - 1)
+                            {
+                                pFigure.Y = HEIGHT - 1;
+                            }
                         }
                         break;
 
@@ -67,6 +76,7 @@ namespace ConsoleApp
                         }
                         break;
                 }
+            }
         }
 
         // Стартовые данные.
@@ -114,7 +124,6 @@ namespace ConsoleApp
             }
             else
                 ++pFigure.Y;
-
         }
 
         // Метод очищает игровое поле.
@@ -165,15 +174,15 @@ namespace ConsoleApp
         //
         void Final()
         {
-            if (isExit)
+            if (!isExit)
             {
-                Console.SetCursorPosition(13, HEIGHT / 2);
+                Console.SetCursorPosition(8, HEIGHT / 2);
                 Console.Write("Ты проиграл!");
                 Console.SetCursorPosition(WIDTH, HEIGHT);
             }
             else
             {
-                Console.SetCursorPosition(13, HEIGHT / 2);
+                Console.SetCursorPosition(8, HEIGHT / 2);
                 Console.Write("Игра завершена!");
                 Console.SetCursorPosition(WIDTH, HEIGHT);
             }
@@ -187,6 +196,7 @@ namespace ConsoleApp
                 StartSettings();
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
+                long lastTimerScreen = timer.ElapsedMilliseconds;
                 pFigure.X = 9;
                 pFigure.Y = 0;
                 do
@@ -196,17 +206,23 @@ namespace ConsoleApp
                         FigureBorn();
                     }
 
+                    KeyDown();
+                    
                     if (timer.ElapsedMilliseconds - lastTimer >= 1000)
                     {
                         lastTimer = timer.ElapsedMilliseconds;
 
-                        KeyDown();
-
-                        Screen();
-
                         MoveFigure();
 
                     }
+
+                    if (timer.ElapsedMilliseconds - lastTimerScreen >= 100)
+                    {
+                        lastTimerScreen = timer.ElapsedMilliseconds;
+
+                        Screen();
+                    }
+
                 } while (!IsLoss() && !isExit);
 
                 Final();
