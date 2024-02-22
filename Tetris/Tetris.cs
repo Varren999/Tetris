@@ -15,17 +15,17 @@ namespace ConsoleApp
         Stopwatch timer = new Stopwatch();
         StringBuilder sb = new StringBuilder();
 
-        const int WIDTH = 32, HEIGHT = 15;
+        const int WIDTH = 22, HEIGHT = 15;
         
         float speed = 0;
 
-        string figure = "[][][][]";
+        string figure = "1";
         Point pFigure = new Point();
         bool deep = false;
 
         bool isExit = false;
 
-        string map = "#                    ##########\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    ##########\n#                    # Score: #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n#                    #        #\n###############################";
+        string map = "#0000000000##########\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000##########\n#0000000000# Score: #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n###############################";
 
         // Обработка нажатий.
         void KeyDown()
@@ -47,9 +47,9 @@ namespace ConsoleApp
                     case ConsoleKey.RightArrow:
                         {
                             ++pFigure.X;
-                            if (pFigure.X + figure.Length > 21)
+                            if (pFigure.X + figure.Length > 11)
                             {
-                                pFigure.X = 21 - figure.Length;
+                                pFigure.X = 11 - figure.Length;
                             }
                         }
                         break;
@@ -147,7 +147,7 @@ namespace ConsoleApp
         void Screen()
         {
             Clear();
-        
+            
             try
             {
                 sb = new StringBuilder(map);
@@ -156,12 +156,13 @@ namespace ConsoleApp
                     sb[pFigure.Y * WIDTH + pFigure.X + c] = figure[c];
                 }
                 map = sb.ToString();
-
+                map = map.Replace("0", "  ");
+                map = map.Replace("1", "[]");
                 Console.WriteLine(map);
 
                 for (int c = 0; c < figure.Length; c++)
                 {
-                    sb[pFigure.Y * WIDTH + pFigure.X + c] = ' ';
+                    sb[pFigure.Y * WIDTH + pFigure.X + c] = '0';
                 }
                 map = sb.ToString();
             }
@@ -197,7 +198,7 @@ namespace ConsoleApp
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
                 long lastTimerScreen = timer.ElapsedMilliseconds;
-                pFigure.X = 9;
+                pFigure.X = 5;
                 pFigure.Y = 0;
                 do
                 {
