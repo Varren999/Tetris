@@ -23,7 +23,7 @@ namespace ConsoleApp
 
         const int WIDTH = 22, HEIGHT = 15;
         
-        float speed = 0;
+        int speed = 1;
 
         Figure CurFigure;
         Figure NextFigure;
@@ -43,7 +43,7 @@ namespace ConsoleApp
                     case ConsoleKey.LeftArrow:
                         {
                             --CurFigure.pos.X;
-                            if (CurFigure.pos.X < 1)
+                            if (Collision())
                             {
                                 CurFigure.pos.X = 1;
                             }
@@ -53,7 +53,7 @@ namespace ConsoleApp
                     case ConsoleKey.RightArrow:
                         {
                             ++CurFigure.pos.X;
-                            if (CurFigure.pos.X + CurFigure.figure[0].Length > 11)
+                            if (Collision())
                             {
                                 CurFigure.pos.X = 11 - CurFigure.figure[0].Length;
                             }
@@ -63,7 +63,7 @@ namespace ConsoleApp
                     case ConsoleKey.DownArrow:
                         {
                             ++CurFigure.pos.Y;
-                            if (CurFigure.pos.Y + CurFigure.figure.Length > HEIGHT - 1)
+                            if (Collision())
                             {
                                 CurFigure.pos.Y = HEIGHT - CurFigure.figure.Length;
                             }
@@ -79,6 +79,9 @@ namespace ConsoleApp
                     case ConsoleKey.Spacebar:
                         {
                             CurFigure = CurFigure.Rotation(CurFigure);
+                            if(Collision())
+                                CurFigure.pos.X = 11 - CurFigure.figure[0].Length;
+                            
                         }
                         break;
                 }
@@ -117,23 +120,32 @@ namespace ConsoleApp
             return false;
         }
 
-        // Движение.
-        void MoveFigure()
+        //
+        bool Collision()
         {
             bool collision = false;
             try
             {
-                    for (int i = 0; i < CurFigure.figure[CurFigure.figure.Length - 1].Length; i++)
+                for (int c = 0; c < CurFigure.figure.Length; c++)
+                {
+                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
                     {
-                        if (map[((CurFigure.pos.Y + CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] == '#' || map[((CurFigure.pos.Y + CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] == '1')
+                        if (map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '#' || map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '1')
                             collision = true;
                     }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            if (collision)
+            return collision;
+        }
+
+        // Движение.
+        void MoveFigure()
+        {
+            if (Collision())
             {
                 isFigureLive = false;
             }
@@ -148,7 +160,7 @@ namespace ConsoleApp
             Console.SetCursorPosition(0, 0);
             try
             {
-                for (int c = 0; c < HEIGHT; c++)
+                for (int c = 0; c < HEIGHT + 10; c++)
                     Console.WriteLine(empty);
             }
             catch (Exception ex)
@@ -162,20 +174,20 @@ namespace ConsoleApp
         void Screen()
         {
             Clear();
-            
             try
             {
                 sb = new StringBuilder(map);
                 for (int c = 0; c < CurFigure.figure.Length; c++)
                 {
                     for (int i = 0; i < CurFigure.figure[c].Length; i++)
-                    { 
+                    {
                         sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
                     }
                 }
                 map = sb.ToString();
                 map = map.Replace("0", "  ");
                 map = map.Replace("1", "[]");
+
                 Console.WriteLine(map);
 
                 for (int c = 0; c < CurFigure.figure.Length; c++)
@@ -186,11 +198,13 @@ namespace ConsoleApp
                     }
                 }
                 map = sb.ToString();
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            
         }
 
         //
@@ -228,22 +242,19 @@ namespace ConsoleApp
                     {
                         BornFigure();
                     }
-
                     KeyDown();
+                    if (timer.ElapsedMilliseconds - lastTimerScreen >= 100)
+                    {
+                        lastTimerScreen = timer.ElapsedMilliseconds;
+                        Screen();
+                    }
                     
-                    if (timer.ElapsedMilliseconds - lastTimer >= 1000)
+                    if (timer.ElapsedMilliseconds - lastTimer >= (1000/speed))
                     {
                         lastTimer = timer.ElapsedMilliseconds;
 
                         MoveFigure();
 
-                    }
-
-                    if (timer.ElapsedMilliseconds - lastTimerScreen >= 100)
-                    {
-                        lastTimerScreen = timer.ElapsedMilliseconds;
-
-                        Screen();
                     }
 
                 } while (!IsLoss() && !isExit);
