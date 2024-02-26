@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////
 // Autor: Vatslav Varren
-// [] Создание фигуры.
+// [*] Создание фигуры.
 // [] Обработка движения фигуры.
-// [] 
+// [] Проверка на столкновение с поверхностью.
 //////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,8 @@ namespace ConsoleApp
         float speed = 0;
 
         string figure = "1";
+        Figure CurFigure;
+        Figure NextFigure;
         Point pFigure = new Point();
         bool deep = false;
 
@@ -97,9 +99,14 @@ namespace ConsoleApp
             return false;
         }
 
-        void FigureBorn()
+        void BornFigure()
         {
+            Figure temp = new Figure();
+            CurFigure = NextFigure;
+            NextFigure = temp;
 
+            pFigure.X = 5;
+            pFigure.Y = 0;
         }
 
         // Проверка на проигрыш.
@@ -204,13 +211,13 @@ namespace ConsoleApp
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
                 long lastTimerScreen = timer.ElapsedMilliseconds;
-                pFigure.X = 5;
-                pFigure.Y = 0;
+                Figure temp = new Figure();
+                NextFigure = temp;
                 do
                 {
                     if(!IsFigureLive())
                     {
-                        FigureBorn();
+                        BornFigure();
                     }
 
                     KeyDown();

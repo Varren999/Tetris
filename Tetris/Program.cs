@@ -10,40 +10,20 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            
-            bool[,] bools = new bool[15, 10];
+            //Tetris game = new Tetris();
+            //game.Play();
+            Figure fig = new Figure();
+            for (int i = 0; i < fig.figure.Length; i++)
+            {
+                Console.WriteLine(fig.figure[i]);
+            }
 
-
-            string[] figureA = { "[][]",
-                                 "[][]"};
-
-            string[] figureB = { "[][][][]" };
-
-            string[] figureC = { "[][]  ",
-                                 "  [][]" };
-
-            string[] figureD = { "[][][]",
-                                 "[]    "};
-
-            string[] figureE = { "[]",
-                                 "[]",
-                                 "[]",
-                                 "[]"};
-
-            string[] figureF = { "  []",
-                                 "[][]",
-                                 "[]  "};
-
-            string[] figureG = { "[][]",
-                                 "  []",
-                                 "  []"};
-
-            string[] figureH = { "  []  ",
-                                 "[][][]"};
-
-            //Screen(map);
-            Tetris tr = new Tetris();
-            tr.Play();
+            fig = fig.Rotation(fig);
+            Console.WriteLine();
+            for (int i = 0; i < fig.figure.Length; i++)
+            {
+                Console.WriteLine(fig.figure[i]);
+            }
         }
     }
 }
