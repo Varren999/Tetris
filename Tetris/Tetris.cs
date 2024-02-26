@@ -27,8 +27,8 @@ namespace ConsoleApp
 
         Figure CurFigure;
         Figure NextFigure;
+        Point lastPos = new Point(0, 0);
         bool isFigureLive = false;
-
         bool isExit = false;
 
         string map = "#0000000000##########\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000##########\n#0000000000# Score: #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n###############################";
@@ -130,7 +130,7 @@ namespace ConsoleApp
                 {
                     for (int i = 0; i < CurFigure.figure[c].Length; i++)
                     {
-                        if (map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '#' || map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '1')
+                        if (map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '#' /*|| map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '1'*/)
                             collision = true;
                     }
                 }
@@ -173,36 +173,43 @@ namespace ConsoleApp
         // Отрисовка экрана.
         void Screen()
         {
-            Clear();
-            try
+            if (lastPos.X != CurFigure.pos.X || lastPos.Y != CurFigure.pos.Y)
             {
-                sb = new StringBuilder(map);
-                for (int c = 0; c < CurFigure.figure.Length; c++)
+                Clear();
+                try
                 {
-                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                    sb = new StringBuilder(map);
+                    for (int c = 0; c < CurFigure.figure.Length; c++)
                     {
-                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
+                        for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                        {
+                            sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
+                            //if(CurFigure.pos.Y - 1 >= 0)
+                            //{
+                            //    sb[((CurFigure.pos.Y + c - CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] = '0';
+                            //}
+                        }
                     }
+                    map = sb.ToString();
+                    map = map.Replace("0", "  ");
+                    map = map.Replace("1", "[]");
+                    lastPos = CurFigure.pos;
+                    Console.WriteLine(map);
+
+                    for (int c = 0; c < CurFigure.figure.Length; c++)
+                    {
+                        for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                        {
+                            sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
+                        }
+                    }
+                    map = sb.ToString();
+
                 }
-                map = sb.ToString();
-                map = map.Replace("0", "  ");
-                map = map.Replace("1", "[]");
-
-                Console.WriteLine(map);
-
-                for (int c = 0; c < CurFigure.figure.Length; c++)
+                catch (Exception ex)
                 {
-                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
-                    {
-                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
-                    }
+                    Console.WriteLine(ex.Message);
                 }
-                map = sb.ToString();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
             
         }
@@ -235,7 +242,6 @@ namespace ConsoleApp
                 long lastTimerScreen = timer.ElapsedMilliseconds;
                 Figure temp = new Figure();
                 NextFigure = temp;
-
                 do
                 {
                     if(!isFigureLive)
