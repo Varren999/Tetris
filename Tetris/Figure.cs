@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
@@ -55,16 +52,16 @@ namespace ConsoleApp
         static string[] RG1 = { "111",          // [][][]
                                 "001"};         //     []
 
-        static string[] RG2 = { "11",           // [][]
-                                "10",           // []
-                                "10"};          // []
+        static string[] RG2 = { "01",           //   []
+                                "01",           //   []
+                                "11"};          // [][]
 
         static string[] RG3 = { "100",          // []
                                 "111"};         // [][][]
 
-        static string[] RG4 = { "01",           //   []
-                                "01",           //   []
-                                "11"};          // [][]
+        static string[] RG4 = { "11",           // [][]
+                                "10",           // []
+                                "10"};          // []     
 
         static string[] T1 = { "010",           //   []
                                "111"};          // [][][]
@@ -86,7 +83,7 @@ namespace ConsoleApp
         {
             pos.X = 5;
             pos.Y = 0;
-            figure = ColFigure[random.Next(1, 19)];
+            figure = ColFigure[random.Next(0, 18)];
         }
 
         public Figure Rotation(Figure current)

@@ -25,11 +25,9 @@ namespace ConsoleApp
         
         float speed = 0;
 
-        string figure = "1";
         Figure CurFigure;
         Figure NextFigure;
-        Point pFigure = new Point();
-        bool deep = false;
+        bool isFigureLive = false;
 
         bool isExit = false;
 
@@ -44,30 +42,30 @@ namespace ConsoleApp
                 {
                     case ConsoleKey.LeftArrow:
                         {
-                            --pFigure.X;
-                            if (pFigure.X < 1)
+                            --CurFigure.pos.X;
+                            if (CurFigure.pos.X < 1)
                             {
-                                pFigure.X = 1;
+                                CurFigure.pos.X = 1;
                             }
                         }
                         break;
 
                     case ConsoleKey.RightArrow:
                         {
-                            ++pFigure.X;
-                            if (pFigure.X + figure.Length > 11)
+                            ++CurFigure.pos.X;
+                            if (CurFigure.pos.X + CurFigure.figure[0].Length > 11)
                             {
-                                pFigure.X = 11 - figure.Length;
+                                CurFigure.pos.X = 11 - CurFigure.figure[0].Length;
                             }
                         }
                         break;
 
                     case ConsoleKey.DownArrow:
                         {
-                            ++pFigure.Y;
-                            if (pFigure.Y > HEIGHT - 1)
+                            ++CurFigure.pos.Y;
+                            if (CurFigure.pos.Y + CurFigure.figure.Length > HEIGHT - 1)
                             {
-                                pFigure.Y = HEIGHT - 1;
+                                CurFigure.pos.Y = HEIGHT - CurFigure.figure.Length;
                             }
                         }
                         break;
@@ -80,7 +78,7 @@ namespace ConsoleApp
 
                     case ConsoleKey.Spacebar:
                         {
-
+                            CurFigure = CurFigure.Rotation(CurFigure);
                         }
                         break;
                 }
@@ -93,20 +91,12 @@ namespace ConsoleApp
             
         }
 
-        //
-        bool IsFigureLive()
-        {
-            return false;
-        }
-
         void BornFigure()
         {
             Figure temp = new Figure();
             CurFigure = NextFigure;
             NextFigure = temp;
-
-            pFigure.X = 5;
-            pFigure.Y = 0;
+            isFigureLive = true;
         }
 
         // Проверка на проигрыш.
@@ -130,13 +120,25 @@ namespace ConsoleApp
         // Движение.
         void MoveFigure()
         {
-            if (pFigure.Y == HEIGHT - 1)
+            bool collision = false;
+            try
             {
-                deep = true;
-                pFigure.Y = 0;
+                    for (int i = 0; i < CurFigure.figure[CurFigure.figure.Length - 1].Length; i++)
+                    {
+                        if (map[((CurFigure.pos.Y + CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] == '#' || map[((CurFigure.pos.Y + CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] == '1')
+                            collision = true;
+                    }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            if (collision)
+            {
+                isFigureLive = false;
             }
             else
-                ++pFigure.Y;
+                ++CurFigure.pos.Y;
         }
 
         // Метод очищает игровое поле.
@@ -164,18 +166,24 @@ namespace ConsoleApp
             try
             {
                 sb = new StringBuilder(map);
-                for (int c = 0; c < figure.Length; c++)
+                for (int c = 0; c < CurFigure.figure.Length; c++)
                 {
-                    sb[pFigure.Y * WIDTH + pFigure.X + c] = figure[c];
+                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                    { 
+                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
+                    }
                 }
                 map = sb.ToString();
                 map = map.Replace("0", "  ");
                 map = map.Replace("1", "[]");
                 Console.WriteLine(map);
 
-                for (int c = 0; c < figure.Length; c++)
+                for (int c = 0; c < CurFigure.figure.Length; c++)
                 {
-                    sb[pFigure.Y * WIDTH + pFigure.X + c] = '0';
+                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                    {
+                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
+                    }
                 }
                 map = sb.ToString();
             }
@@ -213,9 +221,10 @@ namespace ConsoleApp
                 long lastTimerScreen = timer.ElapsedMilliseconds;
                 Figure temp = new Figure();
                 NextFigure = temp;
+
                 do
                 {
-                    if(!IsFigureLive())
+                    if(!isFigureLive)
                     {
                         BornFigure();
                     }
