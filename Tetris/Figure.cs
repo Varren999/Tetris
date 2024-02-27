@@ -6,86 +6,87 @@ namespace ConsoleApp
 {
     internal class Figure
     {
-        Random random = new Random();
-        public Point pos = new Point();
+        private Random random = new Random();
 
+        public Point pos = new Point();
         public string[] figure;
 
-        static string[] cube = { "11",      // [][]
-                                 "11"};     // [][]
+        private static string[] cube = { "11",      // [][]
+                                         "11"};     // [][]
 
-        static string[] lineH = { "1111" }; // [][][][]
+        private static string[] lineH = { "1111" }; // [][][][]
 
-        static string[] lineV = { "1",      // []
-                                  "1",      // []
-                                  "1",      // []
-                                  "1"};     // []
+        private static string[] lineV = { "1",      // []
+                                          "1",      // []
+                                          "1",      // []
+                                          "1"};     // []
 
-        static string[] angleH= { "110",      // [][]
-                                  "011" };    //   [][]
+        private static string[] angleH= { "110",      // [][]
+                                          "011" };    //   [][]
 
-        static string[] angleV = { "01",       //   []
-                                   "11",       // [][]
-                                   "10"};      // []
+        private static string[] angleV = { "01",       //   []
+                                           "11",       // [][]
+                                           "10"};      // []
 
-        static string[] RangleH = { "011",      //   [][]
-                                    "110" };    // [][]
+        private static string[] RangleH = { "011",      //   [][]
+                                            "110" };    // [][]
 
-        static string[] RangleV = { "10",       // []
-                                    "11",       // [][]
-                                    "01"};      //   []
+        private static string[] RangleV = { "10",       // []
+                                            "11",       // [][]
+                                            "01"};      //   []
 
-        static string[] G1 = { "111",           // [][][]
-                               "100"};          // []
+        private static string[] G1 = { "111",           // [][][]
+                                       "100"};          // []
 
-        static string[] G2 = { "11",            // [][]
-                               "01",            //   []
-                               "01"};           //   []
+        private static string[] G2 = { "11",            // [][]
+                                       "01",            //   []
+                                       "01"};           //   []
 
-        static string[] G3 = { "001",           //     []
-                               "111"};          // [][][]
+        private static string[] G3 = { "001",           //     []
+                                       "111"};          // [][][]
 
-        static string[] G4 = { "10",            // []
-                               "10",            // []
-                               "11"};           // [][]
+        private static string[] G4 = { "10",            // []
+                                       "10",            // []
+                                       "11"};           // [][]
 
-        static string[] RG1 = { "111",          // [][][]
-                                "001"};         //     []
+        private static string[] RG1 = { "111",          // [][][]
+                                        "001"};         //     []
 
-        static string[] RG2 = { "01",           //   []
-                                "01",           //   []
-                                "11"};          // [][]
+        private static string[] RG2 = { "01",           //   []
+                                        "01",           //   []
+                                        "11"};          // [][]
 
-        static string[] RG3 = { "100",          // []
-                                "111"};         // [][][]
+        private static string[] RG3 = { "100",          // []
+                                        "111"};         // [][][]
 
-        static string[] RG4 = { "11",           // [][]
-                                "10",           // []
-                                "10"};          // []     
+        private static string[] RG4 = { "11",           // [][]
+                                        "10",           // []
+                                        "10"};          // []     
 
-        static string[] T1 = { "010",           //   []
-                               "111"};          // [][][]
+        private static string[] T1 = { "010",           //   []
+                                       "111"};          // [][][]
 
-        static string[] T2 = { "10",            // []
-                               "11",            // [][]
-                               "10"};           // []      
+        private static string[] T2 = { "10",            // []
+                                       "11",            // [][]
+                                       "10"};           // []      
 
-        static string[] T3 = { "111",           // [][][]
-                               "010"};          //   []
+        private static string[] T3 = { "111",           // [][][]
+                                       "010"};          //   []
 
-        static string[] T4 = { "01",            //   []
-                               "11",            // [][]
-                               "01"};           //   [] 
+        private static string[] T4 = { "01",            //   []
+                                       "11",            // [][]
+                                       "01"};           //   [] 
 
-        List<string[]>ColFigure = new List<string[]>() { cube, lineH, lineV, angleH, angleV, RangleH, RangleV, G1, G2, G3, G4, RG1, RG2, RG3, RG4, T1, T2, T3, T4};
+        private List<string[]>CollectionFigures = new List<string[]>() { cube, lineH, lineV, angleH, angleV, RangleH, RangleV, G1, G2, G3, G4, RG1, RG2, RG3, RG4, T1, T2, T3, T4};
         
         public Figure()
         {
             pos.X = 5;
             pos.Y = 0;
-            figure = ColFigure[random.Next(0, 18)];
+            figure = CollectionFigures[random.Next(0, 18)];
         }
 
+        // Метод заменяет полученую фигуру на следующую за ней.
         public Figure Rotation(Figure current)
         {
             if(current.figure == cube)

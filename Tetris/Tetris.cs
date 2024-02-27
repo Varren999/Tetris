@@ -1,8 +1,9 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////
 // Autor: Vatslav Varren
 // [*] Создание фигуры.
-// [] Обработка движения фигуры.
-// [] Проверка на столкновение с поверхностью.
+// [*] Обработка движения фигуры.
+// [*] Проверка на столкновение с поверхностью.
+// [] Оставляем фигуру и создаем новую.
 //////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
@@ -17,26 +18,26 @@ namespace ConsoleApp
 {
     internal class Tetris
     {
-        Random random = new Random();
-        Stopwatch timer = new Stopwatch();
-        StringBuilder sb = new StringBuilder(map);
+        private Random random = new Random();
+        private Stopwatch timer = new Stopwatch();
+        private StringBuilder sb = new StringBuilder(map);
 
-        const int WIDTH = 13, HEIGHT = 15;
+        private const int WIDTH = 13, HEIGHT = 15;
         
-        int speed = 1;
+        private int speed = 1;
 
-        Figure CurFigure;
-        Figure NextFigure;
-        Point lastPos = new Point(0, 0);
-        bool isFigureLive = false;
-        bool isExit = false;
+        private Figure CurFigure;
+        private Figure NextFigure;
+        private Point lastPos = new Point(0, 0);
+        private bool isFigureLive = false;
+        private bool isExit = false;
 
         // Игровое поле.
-        static string map = "#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n############";
-        string text = "#####\n    #\n";
+        private static string map = "#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n############";
+        private string text = "#####\n    #\n";
 
         // Обработка нажатий.
-        void KeyDown()
+        private void KeyDown()
         {
             if (Console.KeyAvailable)
             {
@@ -92,13 +93,13 @@ namespace ConsoleApp
         }
 
         // Стартовые данные.
-        void StartSettings()
+        private void StartSettings()
         {
             
         }
 
         // Создаем новую фигуру.
-        void BornFigure()
+        private void BornFigure()
         {
             Figure temp = new Figure();
             CurFigure = NextFigure;
@@ -108,14 +109,14 @@ namespace ConsoleApp
         }
 
         // Проверка на проигрыш.
-        bool IsLoss()
+        private bool IsLoss()
         {
             
             return false;
         }
 
         // Проверка столкновений.
-        bool Collision()
+        private bool Collision()
         {
             bool collision = false;
             try
@@ -137,7 +138,7 @@ namespace ConsoleApp
         }
 
         // Движение фигуры вниз.
-        void MoveDown()
+        private void MoveDown()
         {
             if (Collision())
             {
@@ -148,7 +149,7 @@ namespace ConsoleApp
         }
 
         // Метод очищает игровое поле.
-        void Clear()
+        private void Clear()
         {
             string empty = "                                                                    ";
             Console.SetCursorPosition(0, 0);
@@ -165,7 +166,7 @@ namespace ConsoleApp
         }
 
         // Отрисовка экрана.
-        void BuildingScene()
+        private void BuildingScene()
         {
             if (lastPos.X != CurFigure.pos.X || lastPos.Y != CurFigure.pos.Y)
             {
@@ -176,12 +177,11 @@ namespace ConsoleApp
                 lastPos = CurFigure.pos;
                 Console.WriteLine(map);
                 ClearFigure();
-            }
-            
+            }          
         }
 
         // Метод рисует фигуру на игравом поле.
-        void DrawFigure()
+        private void DrawFigure()
         {
             try
             {
@@ -205,7 +205,7 @@ namespace ConsoleApp
         }
 
         // Метод стирает фигуру на игравом поле.
-        void ClearFigure()
+        private void ClearFigure()
         {
             try
             {
@@ -226,7 +226,7 @@ namespace ConsoleApp
         }
 
         //
-        void Final()
+        private void Final()
         {
             if (!isExit)
             {
@@ -252,8 +252,7 @@ namespace ConsoleApp
                 long lastTimer = timer.ElapsedMilliseconds;
                 long lastTimerScreen = timer.ElapsedMilliseconds;
                 Figure temp = new Figure();
-                NextFigure = temp;
-                
+                NextFigure = temp;               
                 do
                 {
                     if (!isFigureLive)
