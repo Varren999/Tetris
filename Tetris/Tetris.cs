@@ -19,9 +19,9 @@ namespace ConsoleApp
     {
         Random random = new Random();
         Stopwatch timer = new Stopwatch();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(map);
 
-        const int WIDTH = 22, HEIGHT = 15;
+        const int WIDTH = 13, HEIGHT = 15;
         
         int speed = 1;
 
@@ -31,7 +31,9 @@ namespace ConsoleApp
         bool isFigureLive = false;
         bool isExit = false;
 
-        string map = "#0000000000##########\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000##########\n#0000000000# Score: #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n#0000000000#        #\n###############################";
+        // Игровое поле.
+        static string map = "#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n#0000000000#\n############";
+        string text = "#####\n    #\n";
 
         // Обработка нажатий.
         void KeyDown()
@@ -40,6 +42,7 @@ namespace ConsoleApp
             {
                 switch (Console.ReadKey().Key)
                 {
+                    // Движение фигуры влево.
                     case ConsoleKey.LeftArrow:
                         {
                             --CurFigure.pos.X;
@@ -49,7 +52,7 @@ namespace ConsoleApp
                             }
                         }
                         break;
-
+                    // Движение фигуры вправо.
                     case ConsoleKey.RightArrow:
                         {
                             ++CurFigure.pos.X;
@@ -59,7 +62,7 @@ namespace ConsoleApp
                             }
                         }
                         break;
-
+                    // Движение фигуры вниз.
                     case ConsoleKey.DownArrow:
                         {
                             ++CurFigure.pos.Y;
@@ -69,13 +72,13 @@ namespace ConsoleApp
                             }
                         }
                         break;
-
+                    // Кнопка выхода.
                     case ConsoleKey.Escape:
                         {
                             isExit = true;
                         }
                         break;
-
+                    // Ротация фигуры.
                     case ConsoleKey.Spacebar:
                         {
                             CurFigure = CurFigure.Rotation(CurFigure);
@@ -94,33 +97,24 @@ namespace ConsoleApp
             
         }
 
+        // Создаем новую фигуру.
         void BornFigure()
         {
             Figure temp = new Figure();
             CurFigure = NextFigure;
             NextFigure = temp;
+            lastPos.X = lastPos.Y = 0;
             isFigureLive = true;
         }
 
         // Проверка на проигрыш.
         bool IsLoss()
         {
-            // Проверка на столкновение со стеной.
-            //if (pSnake[0].X == 0 || pSnake[0].Y == 0 || pSnake[0].X == WIDTH - 2 || pSnake[0].Y == HEIGHT - 1)
-            //    return true;
-
-            //for (size_t i = 1; i < len; i++)
-            //{
-            //    if (pSnake[0].X == pSnake[i].X && pSnake[0].Y == pSnake[i].Y)
-            //    {
-            //        i = len;
-            //        return true;
-            //    }
-            //}
+            
             return false;
         }
 
-        //
+        // Проверка столкновений.
         bool Collision()
         {
             bool collision = false;
@@ -142,8 +136,8 @@ namespace ConsoleApp
             return collision;
         }
 
-        // Движение.
-        void MoveFigure()
+        // Движение фигуры вниз.
+        void MoveDown()
         {
             if (Collision())
             {
@@ -171,47 +165,64 @@ namespace ConsoleApp
         }
 
         // Отрисовка экрана.
-        void Screen()
+        void BuildingScene()
         {
             if (lastPos.X != CurFigure.pos.X || lastPos.Y != CurFigure.pos.Y)
             {
                 Clear();
-                try
-                {
-                    sb = new StringBuilder(map);
-                    for (int c = 0; c < CurFigure.figure.Length; c++)
-                    {
-                        for (int i = 0; i < CurFigure.figure[c].Length; i++)
-                        {
-                            sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
-                            //if(CurFigure.pos.Y - 1 >= 0)
-                            //{
-                            //    sb[((CurFigure.pos.Y + c - CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] = '0';
-                            //}
-                        }
-                    }
-                    map = sb.ToString();
-                    map = map.Replace("0", "  ");
-                    map = map.Replace("1", "[]");
-                    lastPos = CurFigure.pos;
-                    Console.WriteLine(map);
-
-                    for (int c = 0; c < CurFigure.figure.Length; c++)
-                    {
-                        for (int i = 0; i < CurFigure.figure[c].Length; i++)
-                        {
-                            sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
-                        }
-                    }
-                    map = sb.ToString();
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                DrawFigure();
+                map = map.Replace("0", "  ");
+                map = map.Replace("1", "[]");
+                lastPos = CurFigure.pos;
+                Console.WriteLine(map);
+                ClearFigure();
             }
             
+        }
+
+        // Метод рисует фигуру на игравом поле.
+        void DrawFigure()
+        {
+            try
+            {
+                for (int c = 0; c < CurFigure.figure.Length; c++)
+                {
+                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                    {
+                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
+                        //if(CurFigure.pos.Y - 1 >= 0)
+                        //{
+                        //    sb[((CurFigure.pos.Y + c - CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] = '0';
+                        //}
+                    }
+                }
+                map = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        // Метод стирает фигуру на игравом поле.
+        void ClearFigure()
+        {
+            try
+            {
+                for (int c = 0; c < CurFigure.figure.Length; c++)
+                {
+                    for (int i = 0; i < CurFigure.figure[c].Length; i++)
+                    {
+                        sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
+                    }
+                }
+                map = sb.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         //
@@ -242,9 +253,10 @@ namespace ConsoleApp
                 long lastTimerScreen = timer.ElapsedMilliseconds;
                 Figure temp = new Figure();
                 NextFigure = temp;
+                
                 do
                 {
-                    if(!isFigureLive)
+                    if (!isFigureLive)
                     {
                         BornFigure();
                     }
@@ -252,14 +264,15 @@ namespace ConsoleApp
                     if (timer.ElapsedMilliseconds - lastTimerScreen >= 100)
                     {
                         lastTimerScreen = timer.ElapsedMilliseconds;
-                        Screen();
+                        BuildingScene();
+                        
                     }
                     
                     if (timer.ElapsedMilliseconds - lastTimer >= (1000/speed))
                     {
                         lastTimer = timer.ElapsedMilliseconds;
 
-                        MoveFigure();
+                        MoveDown();
 
                     }
 
@@ -272,6 +285,7 @@ namespace ConsoleApp
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.ReadKey();
             }
         }
     }
