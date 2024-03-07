@@ -215,10 +215,24 @@ namespace ConsoleApp
             {
                 Clear();
                 DrawFigure();
-                //map = map.Replace("0", "  ");
-                //map = map.Replace("1", "[]");
                 lastPos = CurFigure.pos;
-                Console.WriteLine(map);
+                try
+                {
+                    int row = map.GetUpperBound(0) + 1;
+                    for (int c = 0; c < row; c++)
+                    {
+                        for (int i = 0; i < map.Length / row; i++)
+                        {
+                            Console.Write($"{map[c,i]}");
+                        }
+                        Console.WriteLine();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
                 ClearFigure();
             }          
         }
@@ -232,6 +246,7 @@ namespace ConsoleApp
                 {
                     for (int i = 0; i < CurFigure.figure.Length/ CurFigure.figure.GetUpperBound(0) + 1; i++)
                     {
+                        //map[]
                         //sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
                         //if(CurFigure.pos.Y - 1 >= 0)
                         //{
