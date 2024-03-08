@@ -2,7 +2,7 @@
 // Autor: Vatslav Varren
 // [*] Создание фигуры.
 // [] Обработка движения фигуры.
-// [*] Проверка на столкновение с поверхностью.
+// [] Проверка на столкновение с поверхностью.
 // [] Оставляем фигуру и создаем новую.
 //////////////////////////////////////////////////////////////////////////////////
 using System;
@@ -49,7 +49,7 @@ namespace ConsoleApp
                                            { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 }, // 13
                                            { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 }, // 14
                                            { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 }, // 15
-                                           { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 } }; // 16
+                                           { 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5 } }; // 16
         
 
         // Обработка нажатий.
@@ -84,14 +84,13 @@ namespace ConsoleApp
                         }
                         break;
                     // Ротация фигуры.
-                    //case ConsoleKey.Spacebar:
-                    //    {
-                    //        CurFigure = CurFigure.Rotation(CurFigure);
-                    //        if(Collision())
-                    //            CurFigure.pos.X = 11 - CurFigure.figure[0].Length;
-                            
-                    //    }
-                    //    break;
+                    case ConsoleKey.Spacebar:
+                        {
+                            CurFigure = CurFigure.Rotation(CurFigure);
+                            if (Collision())
+                                CurFigure.pos.X = 11 - (CurFigure.figure.Length / (CurFigure.figure.GetUpperBound(0) + 1));
+                        }
+                        break;
                 }
             }
         }
@@ -108,7 +107,8 @@ namespace ConsoleApp
             Figure temp = new Figure();
             CurFigure = NextFigure;
             NextFigure = temp;
-            lastPos.X = lastPos.Y = 0;
+            DrawFigure();
+            lastPos = CurFigure.pos;
             isFigureLive = true;
         }
 
@@ -125,12 +125,12 @@ namespace ConsoleApp
             bool collision = false;
             try
             {
-                for (int c = 0; c < CurFigure.figure.GetUpperBound(0) + 1; c++)
+                for (int i = 0; i < (CurFigure.figure.GetUpperBound(0) + 1); i++)
                 {
-                    for (int i = 0; i < CurFigure.figure.Length/ CurFigure.figure.GetUpperBound(0) + 1; i++)
+                    for (int j = 0; j < CurFigure.figure.Length / (CurFigure.figure.GetUpperBound(0) + 1); j++)
                     {
-                        //if (map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == 5 /*|| map[((CurFigure.pos.Y + c + 1) * WIDTH) + CurFigure.pos.X + i] == '1'*/)
-                            //collision = true;
+                        if (map[CurFigure.pos.Y + i, CurFigure.pos.X + j] == 5 || map[CurFigure.pos.Y + i, CurFigure.pos.X + j] == 6) // || map[CurFigure.pos.Y + i, CurFigure.pos.X + j] == 1)
+                            collision = true;
                     }
                 }
             }
@@ -144,51 +144,61 @@ namespace ConsoleApp
         // Движение фигуры вниз.
         private void MoveFigure(Move move)
         {
-            //switch (move)
-            //{
-            //    // Падение фигуры.
-            //    case Move.Fall:
-            //        {
-            //            if (Collision())
-            //            {
-            //                isFigureLive = false;
-            //            }
-            //            else
-            //                ++CurFigure.pos.Y;
-            //        } break;
-                
-            //    // Игрок нажимает кнопку движение вниз.
-            //    case Move.Down:
-            //        {
-            //            ++CurFigure.pos.Y;
-            //            if (Collision())
-            //            {
-            //                CurFigure.pos.Y = HEIGHT - CurFigure.figure.Length - 1;
-            //                isFigureLive = false;
-            //            }
-            //        } break;
+            switch (move)
+            {
+                // Игрок нажимает кнопку движение вниз.
+                case Move.Down:
+                    {
+                        ++CurFigure.pos.Y;
+                        if (Collision())
+                        {
+                            --CurFigure.pos.Y;
+                            isFigureLive = false;
+                        }
+                        else
+                        {
+                            ClearFigure();
+                            DrawFigure();
+                            lastPos = CurFigure.pos;
+                        }
+                    }
+                    break;
 
-            //    // Игрок нажимает кнопку движение влево.
-            //    case Move.Left:
-            //        {
-            //            --CurFigure.pos.X;
-            //            if (Collision())
-            //            {
-            //                CurFigure.pos.X = 1;
-            //            }
-            //        } break;
+                // Игрок нажимает кнопку движение влево.
+                case Move.Left:
+                    {
+                        --CurFigure.pos.X;
+                        if (Collision())
+                        {
+                            ++CurFigure.pos.X;
+                        }
+                        else
+                        {
+                            ClearFigure();
+                            DrawFigure();
+                            lastPos = CurFigure.pos;
+                        }
+                    }
+                    break;
 
-            //    // Игрок нажимает кнопку движение вправо.
-            //    case Move.Right:
-            //        {
-            //            ++CurFigure.pos.X;
-            //            if (Collision())
-            //            {
-            //                CurFigure.pos.X = 11 - CurFigure.figure[0].Length;
-            //            }
-            //        } break;
-            //}
-            
+                // Игрок нажимает кнопку движение вправо.
+                case Move.Right:
+                    {
+                        ++CurFigure.pos.X;
+                        if (Collision())
+                        {
+                            --CurFigure.pos.X;
+                        }
+                        else
+                        {
+                            ClearFigure();
+                            DrawFigure();
+                            lastPos = CurFigure.pos;
+                        }
+                    }
+                    break;
+            }
+
         }
 
         // Метод очищает игровое поле.
@@ -211,50 +221,61 @@ namespace ConsoleApp
         // Отрисовка экрана.
         private void BuildingScene()
         {
-            if (lastPos.X != CurFigure.pos.X || lastPos.Y != CurFigure.pos.Y)
-            {
-                Clear();
-                DrawFigure();
-                lastPos = CurFigure.pos;
-                try
-                {
-                    int row = map.GetUpperBound(0) + 1;
-                    for (int c = 0; c < row; c++)
-                    {
-                        for (int i = 0; i < map.Length / row; i++)
-                        {
-                            Console.Write($"{map[c,i]}");
-                        }
-                        Console.WriteLine();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
-                ClearFigure();
-            }          
+            Clear();
+            Preparing();
         }
 
-        // Метод рисует фигуру на игравом поле.
+        // Метод рисует фигуру на игровом поле.
         private void DrawFigure()
         {
             try
             {
-                for (int c = 0; c < CurFigure.figure.GetUpperBound(0) + 1; c++)
+                for (int i = 0; i < (CurFigure.figure.GetUpperBound(0) + 1); i++)
                 {
-                    for (int i = 0; i < CurFigure.figure.Length/ CurFigure.figure.GetUpperBound(0) + 1; i++)
+                    for (int j = 0; j < CurFigure.figure.Length / (CurFigure.figure.GetUpperBound(0) + 1); j++)
                     {
-                        //map[]
-                        //sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = CurFigure.figure[c][i];
-                        //if(CurFigure.pos.Y - 1 >= 0)
-                        //{
-                        //    sb[((CurFigure.pos.Y + c - CurFigure.figure.Length) * WIDTH) + CurFigure.pos.X + i] = '0';
-                        //}
+                        map[CurFigure.pos.Y + i, CurFigure.pos.X + j] = CurFigure.figure[i, j];
                     }
                 }
-                //map = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DrawFigure" + ex.Message);
+            }
+        }
+
+        // Метод стирает фигуру на игровом поле.
+        private void ClearFigure()
+        {
+            try
+            {
+                for (int i = 0; i < (CurFigure.figure.GetUpperBound(0) + 1); i++)
+                {
+                    for (int j = 0; j < CurFigure.figure.Length / (CurFigure.figure.GetUpperBound(0) + 1); j++)
+                    {
+                        map[lastPos.Y + i, lastPos.X + j] = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("DrawFigure" + ex.Message);
+            }
+        }
+
+        //
+        private void Preparing()
+        {
+            try
+            {
+                for (int c = 0; c < (map.GetUpperBound(0) + 1); c++)
+                {
+                    for (int i = 0; i < map.Length / (map.GetUpperBound(0) + 1); i++)
+                    {
+                        Console.Write(Substitution(map[c, i]));
+                    }
+                    Console.WriteLine();
+                }
             }
             catch (Exception ex)
             {
@@ -262,25 +283,21 @@ namespace ConsoleApp
             }
         }
 
-        // Метод стирает фигуру на игравом поле.
-        private void ClearFigure()
+        //
+        private string Substitution(int value)
         {
-            try
+            switch(value)
             {
-                for (int c = 0; c < CurFigure.figure.GetUpperBound(0) + 1; c++)
-                {
-                    for (int i = 0; i < CurFigure.figure.Length / CurFigure.figure.GetUpperBound(0) + 1; i++)
-                    {
-                        //sb[((CurFigure.pos.Y + c) * WIDTH) + CurFigure.pos.X + i] = '0';
-                    }
-                }
-                //map = sb.ToString();
-
+                case 0:
+                    return "  ";
+                case 1:
+                    return "[]";
+                case 5:
+                    return "#";
+                case 6:
+                    return "##";
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            return " ";
         }
 
         //
@@ -321,7 +338,7 @@ namespace ConsoleApp
                         {
                             BornFigure();
                         }
-
+                        
                         BuildingScene();
                         
                     }
