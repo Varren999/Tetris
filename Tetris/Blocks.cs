@@ -4,16 +4,22 @@ using System.Drawing;
 
 namespace ConsoleApp
 {
-    internal class Figure
+    internal class Blocks
     {
-        private Random random = new Random(DateTime.Now.Millisecond);
+        private readonly Random random = new Random(DateTime.Now.Millisecond);
 
-        public int[,] figure;
+        private readonly int[,] block;
 
-        private static int[,] O = {{ 5, 6, 5, 6},              // [][]
-                                      { 0, 0, 1, 1}};             // [][]
+        public int[,] Block
+        {
+            get { return  block; }
+        }
 
-        //private static int[,] lineH = { { 1, 1, 1, 1 } };   // [][][][]
+        private static readonly int[,] O = {{ 5, 6, 5, 6},              // [][]
+                                            { 0, 0, 1, 1}};             // [][]
+
+        private static readonly int[,] L = { { 5, 6, 7, 8 },
+                                             { 0, 0, 0, 0} };           // [][][][]
 
         //private static int[,] lineV = { { 1 },              // []
         //                                { 1 },              // []
@@ -76,11 +82,11 @@ namespace ConsoleApp
         //                             { 1, 1 },              // [][]
         //                             { 0, 1 } };            //   [] 
 
-        //private List<int[,]> CollectionFigures = new List<int[,]>() { cube, lineH, lineV, angleH, angleV, RangleH, RangleV, G1, G2, G3, G4, RG1, RG2, RG3, RG4, T1, T2, T3, T4};
+        private readonly List<int[,]> CollectionFigures = new List<int[,]>() { O, L }; // lineV, angleH, angleV, RangleH, RangleV, G1, G2, G3, G4, RG1, RG2, RG3, RG4, T1, T2, T3, T4};
         
-        public Figure()
+        public Blocks()
         {
-            figure = O; //CollectionFigures[random.Next(0, 18)];
+            block = CollectionFigures[random.Next(0, 2)];
         }
 
         // Метод заменяет полученую фигуру на следующую за ней.

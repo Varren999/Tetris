@@ -18,77 +18,67 @@ namespace ConsoleApp
 {
     internal class Tetris
     {
-        private Random random = new Random(DateTime.Now.Millisecond);
+        private readonly Random random = new Random(DateTime.Now.Millisecond);
         private Stopwatch timer = new Stopwatch();
 
         private const int WIDTH = 12, HEIGHT = 16;
         
         private int speed = 1;
 
-        private Figure CurFigure;
-        private Figure NextFigure;
-        private bool isFigureLive = false;
+        private Blocks Current_Block;
+        private Blocks Next_Block;
+        private bool isBlock_Live = false;
         private bool isExit = false;
         enum Move { Fall, Down, Left, Right}
-        private int[,] map = new int[WIDTH,HEIGHT];   // Игровое поле.    
+        private int[,] Game_Fields = new int[WIDTH,HEIGHT];   // Игровое поле.    
 
-        // Обработка нажатий.
-        //private void KeyDown()
-        //{
-        //    if (Console.KeyAvailable)
-        //    {
-        //        switch (Console.ReadKey().Key)
-        //        {
-        //            // Движение фигуры влево.
-        //            case ConsoleKey.LeftArrow:
-        //                {
-        //                    MoveFigure(Move.Left);
-        //                }
-        //                break;
-        //            // Движение фигуры вправо.
-        //            case ConsoleKey.RightArrow:
-        //                {
-        //                    MoveFigure(Move.Right);
-        //                }
-        //                break;
-        //            // Движение фигуры вниз.
-        //            case ConsoleKey.DownArrow:
-        //                {
-        //                    MoveFigure(Move.Down);
-        //                }
-        //                break;
-        //            // Кнопка выхода.
-        //            case ConsoleKey.Escape:
-        //                {
-        //                    isExit = true;
-        //                }
-        //                break;
-        //            // Ротация фигуры.
-        //            case ConsoleKey.Spacebar:
-        //                {
-        //                    CurFigure = CurFigure.Rotation(CurFigure);
-        //                    if (Collision())
-        //                        CurFigure.pos.X = 11 - (CurFigure.figure.Length / (CurFigure.figure.GetUpperBound(0) + 1));
-        //                }
-        //                break;
-        //        }
-        //    }
-        //}
-
-        // Стартовые данные.
-        private void StartSettings()
+        //Обработка нажатий.
+        private void KeyDown()
         {
-            
+            if (Console.KeyAvailable)
+            {
+                switch (Console.ReadKey().Key)
+                {
+                    // Движение фигуры влево.
+                    case ConsoleKey.LeftArrow:
+                        {
+                            MoveBlock(Move.Left);
+                        }
+                        break;
+                    // Движение фигуры вправо.
+                    case ConsoleKey.RightArrow:
+                        {
+                            MoveBlock(Move.Right);
+                        }
+                        break;
+                    // Движение фигуры вниз.
+                    case ConsoleKey.DownArrow:
+                        {
+                            MoveBlock(Move.Down);
+                        }
+                        break;
+                    // Кнопка выхода.
+                    case ConsoleKey.Escape:
+                        {
+                            isExit = true;
+                        }
+                        break;
+                    // Ротация фигуры.
+                    case ConsoleKey.Spacebar:
+                        {
+                            
+                        }
+                        break;
+                }
+            }
         }
 
-        // Создаем новую фигуру.
-        private void BornFigure()
+        // Создаем новую блок.
+        private void Born_Block()
         {
-            Figure temp = new Figure();
-            CurFigure = NextFigure;
-            NextFigure = temp;
-            DrawFigure();
-            isFigureLive = true;
+            Next_Block = new Blocks();
+            Current_Block = Next_Block;
+            isBlock_Live = true;
         }
 
         // Проверка на проигрыш.
@@ -105,7 +95,7 @@ namespace ConsoleApp
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (CurFigure.figure[0, i] > WIDTH || CurFigure.figure[0, i] <= 0 || CurFigure.figure[1, i] > HEIGHT - 1 || CurFigure.figure[1, i] <= 0)
+                    if (Current_Block.Block[0, i] >= WIDTH - 1 || Current_Block.Block[0, i] <= 0 || Current_Block.Block[1, i] >= HEIGHT - 1 || Current_Block.Block[1, i] <= 0)
                         return true;
                 }
             }
@@ -116,8 +106,8 @@ namespace ConsoleApp
             return false;
         }
 
-        // Движение фигуры вниз.
-        private void MoveFigure(Move move)
+        // Движение фигуры.
+        private void MoveBlock(Move move)
         {
             switch (move)
             {
@@ -126,49 +116,55 @@ namespace ConsoleApp
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            map[CurFigure.figure[0, i], CurFigure.figure[1, i]] = 0;
-                            CurFigure.figure[1, i]++;
+                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
+                            Current_Block.Block[1, i]++;
                         }
                         if (Collision())
                         {
                             for (int i = 0; i < 4; i++)
                             {
-                                CurFigure.figure[1, i]--;
+                                Current_Block.Block[1, i]--;
                             }
-                            isFigureLive = false;
+                            isBlock_Live = false;
                         }
                     }
                     break;
 
-                    //        // Игрок нажимает кнопку движение влево.
-                    //        case Move.Left:
-                    //            {
-                    //                --CurFigure.pos.X;
-                    //                if (Collision())
-                    //                {
-                    //                    ++CurFigure.pos.X;
-                    //                }
-                    //                else
-                    //                {
-                    //                    DrawFigure();
-                    //                }
-                    //            }
-                    //            break;
+                // Игрок нажимает кнопку движение влево.
+                case Move.Left:
+                    {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
+                            Current_Block.Block[0, i]--;
+                        }
+                        if (Collision())
+                        {
+                            for (int i = 0; i < 4; i++)
+                            {
+                                Current_Block.Block[0, i]++;
+                            }
+                        }
+                    }
+                    break;
 
-                    //        // Игрок нажимает кнопку движение вправо.
-                    //        case Move.Right:
-                    //            {
-                    //                ++CurFigure.pos.X;
-                    //                if (Collision())
-                    //                {
-                    //                    --CurFigure.pos.X;
-                    //                }
-                    //                else
-                    //                {
-                    //                    DrawFigure();
-                    //                }
-                    //            }
-                    //            break;
+                // Игрок нажимает кнопку движение вправо.
+                case Move.Right:
+                    {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
+                            Current_Block.Block[0, i]++;
+                        }
+                        if (Collision())
+                        {
+                            for (int i = 0; i < 4; i++)
+                            {
+                                Current_Block.Block[0, i]--;
+                            }
+                        }
+                    }
+                    break;
             }
 
         }
@@ -206,7 +202,7 @@ namespace ConsoleApp
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    map[CurFigure.figure[0, i], CurFigure.figure[1, i]] = 1;
+                    Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 1;
                 }
             }
             catch (Exception ex)
@@ -222,13 +218,13 @@ namespace ConsoleApp
             {
                 for (int x = 0; x < WIDTH; x++)
                 {
-                    map[x, HEIGHT - 1] = 6;
+                    Game_Fields[x, HEIGHT - 1] = 6;
                 }
 
                 for (int y = 0; y < HEIGHT; y++)
                 {
-                    map[0, y] = 5;
-                    map[WIDTH - 1, y] = 5;
+                    Game_Fields[0, y] = 5;
+                    Game_Fields[WIDTH - 1, y] = 5;
                 }             
             }
             catch(Exception ex)
@@ -242,11 +238,11 @@ namespace ConsoleApp
         {
             try
             {
-                for (int y = 0; y < map.Length / (map.GetUpperBound(0) + 1); y++)
+                for (int y = 0; y < Game_Fields.Length / (Game_Fields.GetUpperBound(0) + 1); y++)
                 {
-                    for (int x = 0; x < (map.GetUpperBound(0) + 1); x++)
+                    for (int x = 0; x < (Game_Fields.GetUpperBound(0) + 1); x++)
                     {
-                        Console.Write(Substitution(map[x, y]));
+                        Console.Write(Substitution(Game_Fields[x, y]));
                         //Console.Write(map[x, y]);
                     }
                     Console.WriteLine();
@@ -298,21 +294,19 @@ namespace ConsoleApp
             Message_Log("Запуск игры");
             try
             {
-                StartSettings();
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
                 long lastTimerScreen = timer.ElapsedMilliseconds;
-                Figure temp = new Figure();
-                NextFigure = temp;               
+                Next_Block = new Blocks();            
                 do
                 {
-                    //KeyDown();
+                    KeyDown();
                     if (timer.ElapsedMilliseconds - lastTimerScreen >= 100)
                     {
                         lastTimerScreen = timer.ElapsedMilliseconds;
-                        if (!isFigureLive)
+                        if (!isBlock_Live)
                         {
-                            BornFigure();
+                            Born_Block();
                         }
                         
                         BuildingScene();
@@ -323,7 +317,7 @@ namespace ConsoleApp
                     {
                         lastTimer = timer.ElapsedMilliseconds;
 
-                        MoveFigure(Move.Down);
+                        MoveBlock(Move.Down);
 
                     }
 
@@ -340,7 +334,7 @@ namespace ConsoleApp
             Message_Log("Выход из приложения");
         }
 
-        //
+        // Метод для логирования.
         private void Message_Log(string text)
         {
             using (System.IO.StreamWriter writer = new System.IO.StreamWriter("log.txt", true))
