@@ -111,7 +111,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Message_Log("Collision " + ex.Message);
             }
             return false;
         }
@@ -185,7 +185,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Message_Log("Clear " + ex.Message);
             }
             Console.SetCursorPosition(0, 0);
         }
@@ -211,7 +211,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("DrawFigure" + ex.Message);
+                Message_Log("DrawFigure" + ex.Message);
             }
         }
 
@@ -233,7 +233,7 @@ namespace ConsoleApp
             }
             catch(Exception ex)
             {
-                Console.WriteLine("DrawMap" + ex.Message);
+                Message_Log("DrawMap " + ex.Message);
             }
         }
 
@@ -254,7 +254,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Message_Log("Preparing " + ex.Message);
             }
         }
 
@@ -295,6 +295,7 @@ namespace ConsoleApp
         //
         public void Play()
         {
+            Message_Log("Запуск игры");
             try
             {
                 StartSettings();
@@ -334,10 +335,22 @@ namespace ConsoleApp
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.ReadKey();
+                Message_Log(ex.Message);
+            }
+            Message_Log("Выход из приложения");
+        }
+
+        //
+        private void Message_Log(string text)
+        {
+            using (System.IO.StreamWriter writer = new System.IO.StreamWriter("log.txt", true))
+            {
+                writer.WriteLine(text + ": " + DateTime.Now.ToShortDateString() + " " +
+                DateTime.Now.ToLongTimeString());
+                writer.Flush();
             }
         }
+
     }
 }
 
