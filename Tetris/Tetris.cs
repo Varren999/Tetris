@@ -18,19 +18,19 @@ namespace ConsoleApp
 {
     internal class Tetris
     {
-        private readonly Random random = new Random(DateTime.Now.Millisecond);
-        private Stopwatch timer = new Stopwatch();
+        //private readonly Random random = new Random(DateTime.Now.Millisecond);
+        private readonly Stopwatch timer = new Stopwatch();
 
         private const int WIDTH = 12, HEIGHT = 16;
         
         private int speed = 1;
 
-        private Blocks Current_Block;
-        private Blocks Next_Block;
+        private int[,] block = new int[2, 4];
+        private Blocks next_block;
         private bool isBlock_Live = false;
         private bool isExit = false;
-        enum Move { Fall, Down, Left, Right}
-        private int[,] Game_Fields = new int[WIDTH,HEIGHT];   // Игровое поле.    
+        enum Move { Down, Left, Right, Rotation}
+        private int[,] Game_Fields = new int[WIDTH, HEIGHT];   // Игровое поле.    
 
         //Обработка нажатий.
         private void KeyDown()
@@ -43,32 +43,48 @@ namespace ConsoleApp
                     case ConsoleKey.LeftArrow:
                         {
                             MoveBlock(Move.Left);
-                        }
-                        break;
+                        } break;
+                    case ConsoleKey.A:
+                        {
+                            MoveBlock(Move.Left);
+                        } break;
+
                     // Движение фигуры вправо.
                     case ConsoleKey.RightArrow:
                         {
                             MoveBlock(Move.Right);
-                        }
-                        break;
+                        } break;
+                    case ConsoleKey.D:
+                        {
+                            MoveBlock(Move.Right);
+                        } break;
+
                     // Движение фигуры вниз.
                     case ConsoleKey.DownArrow:
                         {
                             MoveBlock(Move.Down);
                         }
                         break;
+                    case ConsoleKey.S:
+                        {
+                            MoveBlock(Move.Down);
+                        } break;
+
+                    // Ротация фигуры.
+                    case ConsoleKey.Spacebar:
+                        {
+                            MoveBlock(Move.Rotation);
+                        } break;
+                    case ConsoleKey.W:
+                        {
+                            MoveBlock(Move.Rotation);
+                        } break;
+
                     // Кнопка выхода.
                     case ConsoleKey.Escape:
                         {
                             isExit = true;
-                        }
-                        break;
-                    // Ротация фигуры.
-                    case ConsoleKey.Spacebar:
-                        {
-                            
-                        }
-                        break;
+                        } break;
                 }
             }
         }
@@ -76,16 +92,11 @@ namespace ConsoleApp
         // Создаем новую блок.
         private void Born_Block()
         {
-            Next_Block = new Blocks();
-            Current_Block = Next_Block;
+            block = next_block.Block;
+            if(Collision())
+                isExit = true;
+            next_block = new Blocks();
             isBlock_Live = true;
-        }
-
-        // Проверка на проигрыш.
-        private bool IsLoss()
-        {
-            
-            return false;
         }
 
         // Проверка столкновений.
@@ -95,7 +106,7 @@ namespace ConsoleApp
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (Current_Block.Block[0, i] >= WIDTH - 1 || Current_Block.Block[0, i] <= 0 || Current_Block.Block[1, i] >= HEIGHT - 1 || Current_Block.Block[1, i] <= 0)
+                    if (block[0, i] >= WIDTH - 1 || block[0, i] <= 0 || block[1, i] >= HEIGHT - 1)// || Game_Fields[block[1, i], block[0, i]] == 1)
                         return true;
                 }
             }
@@ -116,14 +127,14 @@ namespace ConsoleApp
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
-                            Current_Block.Block[1, i]++;
+                            Game_Fields[block[0, i], block[1, i]] = 0;
+                            block[1, i]++;
                         }
                         if (Collision())
                         {
                             for (int i = 0; i < 4; i++)
                             {
-                                Current_Block.Block[1, i]--;
+                                block[1, i]--;
                             }
                             isBlock_Live = false;
                         }
@@ -135,14 +146,14 @@ namespace ConsoleApp
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
-                            Current_Block.Block[0, i]--;
+                            Game_Fields[block[0, i], block[1, i]] = 0;
+                            block[0, i]--;
                         }
                         if (Collision())
                         {
                             for (int i = 0; i < 4; i++)
                             {
-                                Current_Block.Block[0, i]++;
+                                block[0, i]++;
                             }
                         }
                     }
@@ -153,18 +164,41 @@ namespace ConsoleApp
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            //Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 0;
-                            Current_Block.Block[0, i]++;
+                            Game_Fields[block[0, i], block[1, i]] = 0;
+                            block[0, i]++;
                         }
                         if (Collision())
                         {
                             for (int i = 0; i < 4; i++)
                             {
-                                Current_Block.Block[0, i]--;
+                                block[0, i]--;
                             }
                         }
                     }
                     break;
+
+                // Поворачиваем блок.
+                case Move.Rotation:
+                    {
+                        Point max = new Point(0, 0);
+                        int[,] temp = new int[2, 4];
+                        Array.Copy(temp, block, block.Length);
+                        for(int i = 0; i < 4; i++)
+                        {
+                            if (block[0, i] > max.Y)
+                                max.Y = block[0, i];
+                            if (block[1, i] > max.X)
+                                max.X = block[1, i];
+                        }
+                        for (int i = 0; i < 4; i++)
+                        {
+                            int value = block[0, i];
+                            block[0, i] = max.Y - (max.X - block[1, i]) - 1;
+                            block[1, i] = max.X - (3 - (max.Y - value)) + 1;
+                        }
+                        if (Collision())
+                            Array.Copy(temp, block, temp.Length);
+                    } break;
             }
 
         }
@@ -176,7 +210,7 @@ namespace ConsoleApp
             Console.SetCursorPosition(0, 0);
             try
             {
-                for (int c = 0; c < HEIGHT + 10; c++)
+                for (int y = 0; y < HEIGHT + 10; y++)
                     Console.WriteLine(empty);
             }
             catch (Exception ex)
@@ -190,8 +224,8 @@ namespace ConsoleApp
         private void BuildingScene()
         {
             Clear();
-            DrawMap();
             DrawFigure();
+            DrawMap();
             Preparing();
         }
 
@@ -202,7 +236,7 @@ namespace ConsoleApp
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Game_Fields[Current_Block.Block[0, i], Current_Block.Block[1, i]] = 1;
+                    Game_Fields[block[0, i], block[1, i]] = 1;
                 }
             }
             catch (Exception ex)
@@ -211,11 +245,21 @@ namespace ConsoleApp
             }
         }
 
-        //
+        // Метод рисует игровое поле.
         private void DrawMap()
         {
             try 
             {
+                //for (int y = 0; y < Game_Fields.Length / (Game_Fields.GetUpperBound(0) + 1); y++)
+                //{
+                //    for (int x = 0; x < (Game_Fields.GetUpperBound(0) + 1); x++)
+                //    {
+                //        Game_Fields[x, y];
+                        
+                //    }
+                //    Console.WriteLine();
+                //}
+
                 for (int x = 0; x < WIDTH; x++)
                 {
                     Game_Fields[x, HEIGHT - 1] = 6;
@@ -233,7 +277,7 @@ namespace ConsoleApp
             }
         }
 
-        //
+        // Метод преобразует игровое поле.
         private void Preparing()
         {
             try
@@ -297,7 +341,7 @@ namespace ConsoleApp
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
                 long lastTimerScreen = timer.ElapsedMilliseconds;
-                Next_Block = new Blocks();            
+                next_block = new Blocks();            
                 do
                 {
                     KeyDown();
@@ -321,7 +365,7 @@ namespace ConsoleApp
 
                     }
 
-                } while (!IsLoss() && !isExit);
+                } while (!isExit);
 
                 Final();
 
