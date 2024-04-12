@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Log;
 
 namespace ConsoleApp
 {
@@ -46,8 +47,8 @@ namespace ConsoleApp
                         } break;
                     case ConsoleKey.A:
                         {
-                            MoveBlock(Move.Left);
-                        } break;
+                            goto case ConsoleKey.LeftArrow;
+                        } 
 
                     // Движение фигуры вправо.
                     case ConsoleKey.RightArrow:
@@ -112,7 +113,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Message_Log("Collision " + ex.Message);
+                Logger.Error(ex.TargetSite + ex.Message);
             }
             return false;
         }
@@ -215,7 +216,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Message_Log("Clear " + ex.Message);
+                Logger.Error(ex.TargetSite + ex.Message);
             }
             Console.SetCursorPosition(0, 0);
         }
@@ -241,7 +242,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Message_Log("DrawFigure" + ex.Message);
+                Logger.Error(ex.TargetSite + ex.Message);
             }
         }
 
@@ -273,7 +274,7 @@ namespace ConsoleApp
             }
             catch(Exception ex)
             {
-                Message_Log("DrawMap " + ex.Message);
+                Logger.Error(ex.TargetSite + ex.Message);
             }
         }
 
@@ -294,7 +295,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Message_Log("Preparing " + ex.Message);
+                Logger.Error(ex.TargetSite + ex.Message);
             }
         }
 
@@ -335,7 +336,6 @@ namespace ConsoleApp
         //
         public void Play()
         {
-            Message_Log("Запуск игры");
             try
             {
                 timer.Start();
@@ -373,22 +373,9 @@ namespace ConsoleApp
             }
             catch(Exception ex)
             {
-                Message_Log(ex.Message);
-            }
-            Message_Log("Выход из приложения");
-        }
-
-        // Метод для логирования.
-        private void Message_Log(string text)
-        {
-            using (System.IO.StreamWriter writer = new System.IO.StreamWriter("log.txt", true))
-            {
-                writer.WriteLine(text + ": " + DateTime.Now.ToShortDateString() + " " +
-                DateTime.Now.ToLongTimeString());
-                writer.Flush();
+                Logger.Error(ex.TargetSite + ex.Message);
             }
         }
-
     }
 }
 
