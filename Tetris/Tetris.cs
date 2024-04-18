@@ -26,7 +26,7 @@ namespace ConsoleApp
         
         private int speed = 1;
 
-        private int[,] block = new int[2, 4];
+        private Point[] block;
         private Blocks next_block;
         private bool isBlock_Live = false;
         private bool isExit = false;
@@ -90,7 +90,7 @@ namespace ConsoleApp
             }
         }
 
-        // Создаем новую блок.
+        // Создаем новый блок.
         private void Born_Block()
         {
             block = next_block.Block;
@@ -105,15 +105,15 @@ namespace ConsoleApp
         {
             try
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < block.Length; i++)
                 {
-                    if (block[0, i] >= WIDTH - 1 || block[0, i] <= 0 || block[1, i] >= HEIGHT - 1)// || Game_Fields[block[1, i], block[0, i]] == 1)
+                    if (block[i].X >= WIDTH - 1 || block[i].X <= 0 || block[i].Y >= HEIGHT - 1)// || Game_Fields[block[1, i], block[0, i]] == 1)
                         return true;
-                }
+                }              
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.TargetSite + ex.Message);
+                Logger.Error(ex.TargetSite + " " + ex.Message);
             }
             return false;
         }
@@ -126,16 +126,16 @@ namespace ConsoleApp
                 // Игрок нажимает кнопку движение вниз.
                 case Move.Down:
                     {
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < block.Length; i++)
                         {
-                            Game_Fields[block[0, i], block[1, i]] = 0;
-                            block[1, i]++;
+                            Game_Fields[block[i].X, block[i].Y] = 0;
+                            block[i].Y++;
                         }
                         if (Collision())
                         {
                             for (int i = 0; i < 4; i++)
                             {
-                                block[1, i]--;
+                                block[i].Y--;
                             }
                             isBlock_Live = false;
                         }
@@ -145,16 +145,16 @@ namespace ConsoleApp
                 // Игрок нажимает кнопку движение влево.
                 case Move.Left:
                     {
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < block.Length; i++)
                         {
-                            Game_Fields[block[0, i], block[1, i]] = 0;
-                            block[0, i]--;
+                            Game_Fields[block[i].X, block[i].Y] = 0;
+                            block[i].X--;
                         }
                         if (Collision())
                         {
-                            for (int i = 0; i < 4; i++)
+                            for (int i = 0; i < block.Length; i++)
                             {
-                                block[0, i]++;
+                                block[i].X++;
                             }
                         }
                     }
@@ -163,16 +163,16 @@ namespace ConsoleApp
                 // Игрок нажимает кнопку движение вправо.
                 case Move.Right:
                     {
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < block.Length; i++)
                         {
-                            Game_Fields[block[0, i], block[1, i]] = 0;
-                            block[0, i]++;
+                            Game_Fields[block[i].X, block[i].Y] = 0;
+                            block[i].X++;
                         }
                         if (Collision())
                         {
-                            for (int i = 0; i < 4; i++)
+                            for (int i = 0; i < block.Length; i++)
                             {
-                                block[0, i]--;
+                                block[i].X--;
                             }
                         }
                     }
@@ -181,24 +181,24 @@ namespace ConsoleApp
                 // Поворачиваем блок.
                 case Move.Rotation:
                     {
-                        Point max = new Point(0, 0);
-                        int[,] temp = new int[2, 4];
-                        Array.Copy(temp, block, block.Length);
-                        for(int i = 0; i < 4; i++)
+                        Point[] temp = new Point[block.Length];
+                        Array.Copy(block, temp, block.Length);
+                        int maxx = 0, maxy = 0;
+                        for (int i = 0; i < 4; i++)
                         {
-                            if (block[0, i] > max.Y)
-                                max.Y = block[0, i];
-                            if (block[1, i] > max.X)
-                                max.X = block[1, i];
+                            if (block[i].X > maxy)
+                                maxy = block[i].X;
+                            if (block[i].Y > maxx)
+                                maxx = block[i].Y;
                         }
                         for (int i = 0; i < 4; i++)
                         {
-                            int value = block[0, i];
-                            block[0, i] = max.Y - (max.X - block[1, i]) - 1;
-                            block[1, i] = max.X - (3 - (max.Y - value)) + 1;
+                            int Temp = block[i].X;
+                            block[i].X = maxy - (maxx - block[i].Y) - 1;
+                            block[i].Y = maxx - (3 - (maxy - Temp)) + 1;
                         }
                         if (Collision())
-                            Array.Copy(temp, block, temp.Length);
+                            Array.Copy(temp, block, block.Length);
                     } break;
             }
 
@@ -216,7 +216,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.TargetSite + ex.Message);
+                Logger.Error(ex.TargetSite + " " + ex.Message);
             }
             Console.SetCursorPosition(0, 0);
         }
@@ -235,14 +235,14 @@ namespace ConsoleApp
         {
             try
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < block.Length; i++)
                 {
-                    Game_Fields[block[0, i], block[1, i]] = 1;
+                    Game_Fields[block[i].X, block[i].Y] = 1;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.TargetSite + ex.Message);
+                Logger.Error(ex.TargetSite + " " + ex.Message);
             }
         }
 
@@ -295,7 +295,7 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.TargetSite + ex.Message);
+                Logger.Error(ex.TargetSite + " " + ex.Message);
             }
         }
 
