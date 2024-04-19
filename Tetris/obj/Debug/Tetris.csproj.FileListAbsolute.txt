@@ -14,3 +14,4 @@ C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.exe
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.pdb
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Logger.dll
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
+C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date

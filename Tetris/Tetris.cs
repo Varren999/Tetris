@@ -47,8 +47,8 @@ namespace ConsoleApp
                         } break;
                     case ConsoleKey.A:
                         {
-                            goto case ConsoleKey.LeftArrow;
-                        } 
+                            MoveBlock(Move.Left);
+                        } break;
 
                     // Движение фигуры вправо.
                     case ConsoleKey.RightArrow:
@@ -274,7 +274,7 @@ namespace ConsoleApp
             }
             catch(Exception ex)
             {
-                Logger.Error(ex.TargetSite + ex.Message);
+                Logger.Error(ex.TargetSite + " " + ex.Message);
             }
         }
 
@@ -288,7 +288,7 @@ namespace ConsoleApp
                     for (int x = 0; x < (Game_Fields.GetUpperBound(0) + 1); x++)
                     {
                         Console.Write(Substitution(Game_Fields[x, y]));
-                        //Console.Write(map[x, y]);
+                        //Console.Write(Game_Fields[x, y]);
                     }
                     Console.WriteLine();
                 }
