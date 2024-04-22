@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace ConsoleApp
@@ -32,14 +31,14 @@ namespace ConsoleApp
 
                 case 2:
                     {
-                        block = new Point[]{ new Point(5, 0), new Point(6, 0),          // [][]
-                                             new Point(6, 1), new Point(7, 1) };        //   [][]
+                        block = new Point[]{ new Point(5, 0), new Point(6, 0),                          // [][]
+                                                              new Point(6, 1), new Point(7, 1) };       //   [][]
                     } break;
 
                 case 3:
                     {
-                        block = new Point[]{ new Point(5, 1), new Point(6, 1),          //   [][]
-                                             new Point(6, 0), new Point(7, 0) };        // [][]
+                        block = new Point[]{                  new Point(5, 1), new Point(6, 1),         //   [][]
+                                             new Point(6, 0), new Point(7, 0) };                        // [][]
                     } break;
 
                 case 4:

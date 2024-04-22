@@ -29,11 +29,15 @@ namespace ConsoleApp
         private Point[] block;
         private Blocks next_block;
         private bool isBlock_Live = false;
+
         private bool isExit = false;
-        enum Move { Down, Left, Right, Rotation}
+        enum Move { Down, FastDown, Left, Right, Rotation};
+
         private int[,] Game_Fields = new int[WIDTH, HEIGHT];   // Игровое поле.    
 
-        //Обработка нажатий.
+        /// <summary>
+        /// Обработка нажатий.
+        /// </summary>
         private void KeyDown()
         {
             if (Console.KeyAvailable)
@@ -63,12 +67,12 @@ namespace ConsoleApp
                     // Движение фигуры вниз.
                     case ConsoleKey.DownArrow:
                         {
-                            MoveBlock(Move.Down);
+                            MoveBlock(Move.FastDown);
                         }
                         break;
                     case ConsoleKey.S:
                         {
-                            MoveBlock(Move.Down);
+                            MoveBlock(Move.FastDown);
                         } break;
 
                     // Ротация фигуры.
@@ -107,7 +111,7 @@ namespace ConsoleApp
             {
                 for (int i = 0; i < block.Length; i++)
                 {
-                    if (block[i].X >= WIDTH - 1 || block[i].X <= 0 || block[i].Y >= HEIGHT - 1)// || Game_Fields[block[1, i], block[0, i]] == 1)
+                    if (block[i].X >= WIDTH - 1 || block[i].X <= 0 || block[i].Y + 1 >= HEIGHT - 1)// || Game_Fields[block[i].Y, block[i].X] == 1)
                         return true;
                 }              
             }
@@ -126,53 +130,47 @@ namespace ConsoleApp
                 // Игрок нажимает кнопку движение вниз.
                 case Move.Down:
                     {
-                        for (int i = 0; i < block.Length; i++)
-                        {
-                            Game_Fields[block[i].X, block[i].Y] = 0;
-                            block[i].Y++;
-                        }
                         if (Collision())
-                        {
-                            for (int i = 0; i < 4; i++)
-                            {
-                                block[i].Y--;
-                            }
                             isBlock_Live = false;
+                        else
+                        {
+                            for (int i = 0; i < block.Length; i++)
+                            {
+                                Game_Fields[block[i].X, block[i].Y] = 0;
+                                block[i].Y++;
+                            }
                         }
                     }
                     break;
 
+                case Move.FastDown:
+                    {
+
+                    } break;
+
                 // Игрок нажимает кнопку движение влево.
                 case Move.Left:
                     {
-                        for (int i = 0; i < block.Length; i++)
-                        {
-                            Game_Fields[block[i].X, block[i].Y] = 0;
-                            block[i].X--;
-                        }
-                        if (Collision())
+                        if (!Collision())
                         {
                             for (int i = 0; i < block.Length; i++)
                             {
-                                block[i].X++;
+                                Game_Fields[block[i].X, block[i].Y] = 0;
+                                block[i].X--;
                             }
-                        }
+                        }                      
                     }
                     break;
 
                 // Игрок нажимает кнопку движение вправо.
                 case Move.Right:
                     {
-                        for (int i = 0; i < block.Length; i++)
-                        {
-                            Game_Fields[block[i].X, block[i].Y] = 0;
-                            block[i].X++;
-                        }
-                        if (Collision())
+                        if (!Collision())
                         {
                             for (int i = 0; i < block.Length; i++)
                             {
-                                block[i].X--;
+                                Game_Fields[block[i].X, block[i].Y] = 0;
+                                block[i].X++;
                             }
                         }
                     }
@@ -193,6 +191,8 @@ namespace ConsoleApp
                         }
                         for (int i = 0; i < 4; i++)
                         {
+                            Game_Fields[block[i].X, block[i].Y] = 0;
+
                             int Temp = block[i].X;
                             block[i].X = maxy - (maxx - block[i].Y) - 1;
                             block[i].Y = maxx - (3 - (maxy - Temp)) + 1;
