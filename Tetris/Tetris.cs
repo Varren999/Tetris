@@ -192,7 +192,6 @@ namespace ConsoleApp
                         for (int i = 0; i < 4; i++)
                         {
                             Game_Fields[block[i].X, block[i].Y] = 0;
-
                             int Temp = block[i].X;
                             block[i].X = maxy - (maxx - block[i].Y) - 1;
                             block[i].Y = maxx - (3 - (maxy - Temp)) + 1;
@@ -204,7 +203,9 @@ namespace ConsoleApp
 
         }
 
-        // Метод очищает игровое поле.
+        /// <summary>
+        /// Метод очищает игровое поле.
+        /// </summary>
         private void Clear()
         {
             string empty = "                                                                    ";
