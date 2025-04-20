@@ -22,3 +22,17 @@ C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csp
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csproj.Up2Date
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.exe
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.pdb
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Scope.db
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Microsoft.Data.Sqlite.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\SQLitePCLRaw.batteries_v2.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\SQLitePCLRaw.core.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\SQLitePCLRaw.provider.dynamic_cdecl.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Buffers.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Memory.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Microsoft.Data.Sqlite.xml
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Buffers.xml
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Memory.xml
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
