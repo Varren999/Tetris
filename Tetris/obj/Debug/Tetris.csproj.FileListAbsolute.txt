@@ -12,6 +12,13 @@ C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.AssemblyRefere
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.exe
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.pdb
-C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Logger.dll
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
 C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\bin\Debug\Tetris.exe.config
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\bin\Debug\Tetris.exe
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\bin\Debug\Tetris.pdb
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csproj.AssemblyReference.cache
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csproj.Up2Date
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.exe
+C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.pdb

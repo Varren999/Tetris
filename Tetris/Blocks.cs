@@ -5,8 +5,6 @@ namespace ConsoleApp
 {
     internal class Blocks
     {
-        private readonly Random random = new Random(DateTime.Now.Millisecond);
-
         private readonly Point[] block;
 
         public Point[] Block
@@ -14,9 +12,9 @@ namespace ConsoleApp
             get { return  block; }
         }
 
-        public Blocks()
+        public Blocks(int index)
         {
-            switch(random.Next(0, 7))
+            switch (index)
             {
                 case 0:
                     {
