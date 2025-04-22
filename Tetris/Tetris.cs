@@ -16,8 +16,8 @@ namespace ConsoleApp
         private const int WIDTH = 12, HEIGHT = 18;
         
         private int speed = 1;
-        public int scope = 0;
-        public string player = "";
+        private int scope = 0;
+        private string player = "";
         private int thisFigure = 0;
         private int nextFigure = 0;
 
@@ -517,6 +517,7 @@ namespace ConsoleApp
         {
             try
             {
+                ConnectDB connect = new ConnectDB("Scope.db");
                 InputPlayer();
                 timer.Start();
                 long lastTimer = timer.ElapsedMilliseconds;
@@ -552,6 +553,7 @@ namespace ConsoleApp
                 Final();
 
                 timer.Stop();
+                connect.WriteDB(player, scope);
             }
             catch(Exception ex)
             {

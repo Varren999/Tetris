@@ -5,14 +5,6 @@ C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.AssemblyReferenc
 C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
 C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.exe
 C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.pdb
-C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.exe.config
-C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.exe
-C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.pdb
-C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.AssemblyReference.cache
-C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
-C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.exe
-C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.pdb
-C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
 C:\Users\123\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\bin\Debug\Tetris.exe.config
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\bin\Debug\Tetris.exe
@@ -22,7 +14,11 @@ C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csp
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.csproj.Up2Date
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.exe
 C:\Users\varre\Downloads\Tetris-master\Tetris-master\Tetris\obj\Debug\Tetris.pdb
-C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Scope.db
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.exe.config
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.exe
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Tetris.pdb
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\ConsoleMenu.dll
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Logger.dll
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\Microsoft.Data.Sqlite.dll
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\SQLitePCLRaw.batteries_v2.dll
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\SQLitePCLRaw.core.dll
@@ -36,3 +32,8 @@ C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Buffers.xml
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Memory.xml
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\varre\source\repos\Tetris\Tetris\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.AssemblyReference.cache
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.csproj.Up2Date
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.exe
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Debug\Tetris.pdb
