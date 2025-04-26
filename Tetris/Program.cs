@@ -14,7 +14,6 @@ namespace ConsoleApp
             ConnectDB connect = new ConnectDB("Scope.db");
             Menu menu = new Menu("Тетрис", new string[] { "Играть", "Управление", "Статистика"}, new List<Menu.delFunction> { game.Play, Test, connect.ReadDB});
             menu.Start();
-            //WriteDB(game.player, game.scope);
             Logger.System("Завершение работы приложения");
 
         }

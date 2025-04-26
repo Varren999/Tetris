@@ -2,6 +2,7 @@
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ConsoleApp
 {
@@ -16,36 +17,48 @@ namespace ConsoleApp
 
         public void ReadDB()
         {
-            var db = new SqliteConnection($"Data Source = {path}");
-            db.Open();
-
-            var sql = $"SELECT id, player, scope FROM table_scope ORDER BY scope DESC";
-
-            var command = new SqliteCommand(sql, db);
-
-            var reader = command.ExecuteReader();
-
-            if (!reader.HasRows) throw new Exception("Таблица пуста");
-
-            var scopes = new List<Scopes>();
-
-            while (reader.Read())
+            try
             {
-                var scope = new Scopes()
+                if (File.Exists(path))
                 {
-                    Id = reader.GetInt32(0),
-                    Player = reader.GetString(1),
-                    Scope = reader.GetInt32(2)
-                };
-                scopes.Add(scope);
-            }
+                    var db = new SqliteConnection($"Data Source = {path}");
+                    db.Open();
 
-            db.Close();
-            int it = 0;
-            foreach (var item in scopes)
+                    var sql = $"SELECT id, player, scope FROM table_scope ORDER BY scope DESC";
+
+                    var command = new SqliteCommand(sql, db);
+
+                    var reader = command.ExecuteReader();
+
+                    if (!reader.HasRows) throw new Exception("Таблица пуста");
+
+                    var collections = new List<Scopes>();
+
+                    while (reader.Read())
+                    {
+                        var scope = new Scopes()
+                        {
+                            Id = reader.GetInt32(0),
+                            Player = reader.GetString(1),
+                            Scope = reader.GetInt32(2)
+                        };
+                        collections.Add(scope);
+                    }
+
+                    db.Close();
+                    int it = 0;
+                    foreach (var item in collections)
+                    {
+                        it++;
+                        Console.WriteLine($"{it}: {item.Player} {item.Scope}");
+                    }
+                }
+                else
+                    throw new Exception("Файл не найден!");
+            }
+            catch (Exception ex)
             {
-                it++;
-                Console.WriteLine($"{it}: {item.Player} {item.Scope}");
+                Logger.Error(ex.TargetSite + ex.Message);
             }
         }
 
@@ -53,14 +66,33 @@ namespace ConsoleApp
         {
             try
             {
-                var db = new SqliteConnection($"Data Source = {path}");
+                SqliteConnection db = new SqliteConnection($"Data Source = {path}");
+                SqliteCommand command;
+                string sql;
+                int reader;
+                if (!File.Exists(path))
+                {
+                    File.Create(path).Close();
+                    db.Open();
+                    sql = $"CREATE TABLE table_scope(id INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT, player TEXT NOT NULL, scope INTEGER NOT NULL)";
+                    
+                    command = new SqliteCommand(sql, db);
+
+                    reader = command.ExecuteNonQuery();
+
+                    db.Close();
+                }
+
                 db.Open();
 
-                var sql = $"INSERT INTO table_scope (player, scope) VALUES ('{Player}', {Scope})";
+                sql = $"INSERT INTO table_scope(player, scope) VALUES ('{Player}', '{Scope}')";
 
-                var command = new SqliteCommand(sql, db);
+                command = new SqliteCommand(sql, db);
 
-                var reader = command.ExecuteNonQuery();
+                reader = command.ExecuteNonQuery();
+
+                db.Close();
+
             }
             catch (Exception ex)
             {

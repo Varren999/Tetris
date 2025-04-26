@@ -1,0 +1,5 @@
+26.04.2025 7:16:48: System: Начало работы приложения
+26.04.2025 7:16:53: Error: Void ReadDB()Файл не найден!
+26.04.2025 7:18:31: Error: Void .ctor(System.String)Инициализатор типа "Microsoft.Data.Sqlite.SqliteConnection" выдал исключение.
+26.04.2025 7:18:34: Error: Void ReadDB()Файл не найден!
+26.04.2025 7:18:36: System: Завершение работы приложения

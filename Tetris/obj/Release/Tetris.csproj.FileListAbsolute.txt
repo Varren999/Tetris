@@ -21,3 +21,7 @@ C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.csproj.CoreCompileI
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.csproj.Up2Date
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.exe
 C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.pdb
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Release\Tetris.exe.manifest
+C:\Users\varre\source\repos\Tetris\Tetris\bin\Release\Tetris.application
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.exe.manifest
+C:\Users\varre\source\repos\Tetris\Tetris\obj\Release\Tetris.application
